@@ -21,7 +21,7 @@
  */
 function estConnecte()
 {
-    return isset($_SESSION['idVisiteur']);
+    return isset($_SESSION['idVisiteur']) || isset($_SESSION['idComptable']);
 }
 
 /**
@@ -33,9 +33,15 @@ function estConnecte()
  *
  * @return null
  */
-function connecter($idVisiteur, $nom, $prenom)
+function connecterV($idVisiteur, $nom, $prenom)
 {
     $_SESSION['idVisiteur'] = $idVisiteur;
+    $_SESSION['nom'] = $nom;
+    $_SESSION['prenom'] = $prenom;
+}
+function connecterC($idComptable, $nom, $prenom)
+{
+    $_SESSION['idComptable'] = $idComptable;
     $_SESSION['nom'] = $nom;
     $_SESSION['prenom'] = $prenom;
 }
@@ -96,18 +102,52 @@ function getMois($date)
     return $annee . $mois;
 }
 
+function getMoisPrecedent($mois){
+    $annee = substr($mois, 0,4);
+    $moisrecup = substr($mois, -2);
+    if ($moisrecup = 01){
+        $moisPrecedent = 12;
+        $anneePrecedente = $annee -1;
+    }
+    else {
+        $moisPrecedent = $moisrecup -1;
+        $anneePrecedente = $annee;
+    }
+    return $anneePrecedente . $moisPrecedent;
+}
+
+function getMoisSuivant($mois){
+    $annee = substr($mois, 0,4);
+    $moisrecup = substr($mois, -2);
+    if ($moisrecup = 12){
+        $moisSuivant = 01;
+        $anneeSuivante = $annee + 1;
+    }
+    else {
+        $moisSuivant = $moisrecup + 1;
+        $anneeSuivante = $annee;
+    }
+    return $anneeSuivante . $moisSuivant;
+}
+
+function get12derniermois($mois){
+    for ( $i=0 ; $i < 12 ; $i++){
+        getMoisPrecedent($mois);
+        print ();
+    }
+}
 /* gestion des erreurs */
 
 /**
  * Indique si une valeur est un entier positif ou nul
  *
- * @param Integer $valeur Valeur
+ * @param String $valeur Valeur
  *
  * @return Boolean vrai ou faux
  */
 function estEntierPositif($valeur)
 {
-    return preg_match('/[^0-9]/', $valeur) == 0;
+    return preg_match('/[0-9]/',$valeur) == 0;
 }
 
 /**
