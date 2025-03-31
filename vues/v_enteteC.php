@@ -44,26 +44,24 @@
                     <div class="col-md-8">
                         <ul class="nav nav-pills pull-right" role="tablist">
                             <li <?php if (!$uc || $uc == 'accueil') { ?>class="active" <?php } ?>>
-                                <a href="index.php">
+                                <a href="index.php" style="background-color:orangered;color:white">
                                     <span class="glyphicon glyphicon-home"></span>
                                     Accueil
                                 </a>
                             </li>
-                            <li <?php if ($uc == 'gererFrais') { ?>class="active"<?php } ?>>
-                                <a href="index.php?uc=gererFrais&action=saisirFrais">
-                                    <span class="glyphicon glyphicon-pencil"></span>
-                                    Renseigner la fiche de frais
+                            <li <?php if ($uc == 'valider la fiche de frais') { ?>class="active"<?php } ?>>
+                                <a href="index.php?uc=validerFrais&action=selectionnerVisiteur" style="color:orangered">
+                                    Valider les fiches de frais
                                 </a>
                             </li>
-                            <li <?php if ($uc == 'etatFrais') { ?>class="active"<?php } ?>>
-                                <a href="index.php?uc=etatFrais&action=selectionnerMois">
-                                    <span class="glyphicon glyphicon-list-alt"></span>
-                                    Afficher mes fiches de frais
+                            <li <?php if ($uc == 'suivre le paiement des fiches frais') { ?>class="active"<?php } ?>>
+                                <a href="index.php?uc=payerFrais&action="style="color:orangered">
+                                    € Suivre le paiement des fiches de frais
                                 </a>
                             </li>
                             <li 
                             <?php if ($uc == 'deconnexion') { ?>class="active"<?php } ?>>
-                                <a href="index.php?uc=deconnexion&action=demandeDeconnexion">
+                                <a href="index.php?uc=deconnexion&action=demandeDeconnexion"style="color:orangered">
                                     <span class="glyphicon glyphicon-log-out"></span>
                                     Déconnexion
                                 </a>
@@ -82,6 +80,7 @@
                          title="Laboratoire Galaxy-Swiss Bourdin">
                 </h1>
                 <?php
-            }
-            ?>
-     
+            } ?> 
+        
+    
+

@@ -117,6 +117,14 @@ class PdoGsb
         $requetePrepare->execute();
         return $requetePrepare->fetch();
     }
+    public function getLesVisiteurs()
+    {
+        $requetePrepare = PdoGsb::$monPdo->prepare(
+            'SELECT nom, prenom, id FROM visiteur ORDER BY nom'
+        );
+        $requetePrepare->execute();
+        return $requetePrepare->fetchAll();
+    }
 
     /**
      * Retourne sous forme d'un tableau associatif toutes les lignes de frais
@@ -169,7 +177,20 @@ class PdoGsb
         $laLigne = $requetePrepare->fetch();
         return $laLigne['nb'];
     }
-
+    public function getVerifFicheFrais($visiteurselectionne, $moiselectionne)
+    {
+        $requetePrepare = PdoGsb::$monPdo->prepare(
+            'SELECT fichefrais.mois FROM fichefrais '
+            . 'WHERE fichefrais.idvisiteur = :unIdVisiteur '
+            . 'AND fichefrais.mois = :unMois'
+        );
+        $requetePrepare->bindParam(':unIdVisiteur', $visiteurselectionne, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unMois', $moiselectionne, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        $laLigne = $requetePrepare->fetch();
+        $boolReturn = ($laLigne !== false);
+        return $boolReturn;
+    }
     /**
      * Retourne sous forme d'un tableau associatif toutes les lignes de frais
      * au forfait concernées par les deux arguments

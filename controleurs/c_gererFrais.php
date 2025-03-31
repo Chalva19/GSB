@@ -25,8 +25,18 @@ case 'saisirFrais':
         $pdo->creeNouvellesLignesFrais($idVisiteur, $mois);
     }
     break;
+
 case 'validerMajFraisForfait':
-    $lesFrais = filter_input(INPUT_POST, 'lesFrais', FILTER_SANITIZE_URL);
+    $lesFrais = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+
+    if (!isset($lesFrais['lesFrais']) || !is_array($lesFrais['lesFrais'])) {
+        ajouterErreur('Erreur : Données des frais invalides.');
+        include 'vues/v_erreurs.php';
+        exit();
+    }
+    
+    $lesFrais = $lesFrais['lesFrais'];
+    
     if (lesQteFraisValides($lesFrais)) {
         $pdo->majFraisForfait($idVisiteur, $mois, $lesFrais);
     } else {
@@ -34,6 +44,7 @@ case 'validerMajFraisForfait':
         include 'vues/v_erreurs.php';
     }
     break;
+
 case 'validerCreationFrais':
     $dateFrais = filter_input(INPUT_POST, 'dateFrais', FILTER_SANITIZE_URL);
     $libelle = filter_input(INPUT_POST, 'libelle', FILTER_SANITIZE_URL);

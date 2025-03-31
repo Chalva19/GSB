@@ -34,14 +34,14 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
-                        <a href="index.php?uc=validerFr3ais&action=selectionnerVisiteur"
+                        <a href="index.php?uc=validerFrais&action=selectionnerVisiteur"
                            class="btn btn-success btn-lg" role="button">
                             <span class="glyphicon glyphicon-pencil"></span>
                             <br>Valider la fiche de frais</a>
                         <a href="index.php?uc=payerFrais&action="
                            class="btn btn-primary btn-lg" role="button"style="background-color:orangered;color: white ; border-color: orangered">
                             <span class="glyphicon glyphicon-list-alt"style="color:white"></span>
-                            <br>Suivre le paiment des fiches de frais</a>
+                            <br>Suivre le paiement des fiches de frais</a>
                     </div>
                 </div>
             </div>

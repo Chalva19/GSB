@@ -130,12 +130,48 @@ function getMoisSuivant($mois){
     return $anneeSuivante . $moisSuivant;
 }
 
-function get12derniermois($mois){
-    for ( $i=0 ; $i < 12 ; $i++){
-        getMoisPrecedent($mois);
-        print ();
+
+
+/**
+ * Retourne les 12 mois precedents
+ *
+ * @param String $date au format  jj/mm/aaaa
+ *
+ * @return String Mois au format aaaamm
+ */
+function getDerniers12Mois($mois) {
+    // Extraire l'année et le mois
+    $numAnnee = (int)substr($mois, 0, 4);
+    $numMois = (int)substr($mois, 4, 2);
+
+    // Initialiser un tableau pour stocker les mois
+    $listemois = array();
+
+    // Boucle sur les 12 derniers mois
+    for ($i = 0; $i < 12; $i++) {
+        // Formater le mois avec deux chiffres
+        $listemois[$i] = [
+            'mois' => $numAnnee . str_pad($numMois, 2, '0', STR_PAD_LEFT), // Format "YYYYMM"
+            'numAnnee' => $numAnnee,
+            'numMois' => str_pad($numMois, 2, '0', STR_PAD_LEFT) // Format "MM"
+        ];
+
+        // Décrémenter le mois
+        $numMois--;
+
+        // Si on passe en dessous de janvier, revenir à décembre de l'année précédente
+        if ($numMois == 0) {
+            $numMois = 12;
+            $numAnnee--;
+        }
     }
+
+    return $listemois;
 }
+
+// Test
+//print_r(getDerniers12Mois(date('d/m/Y')));
+
 /* gestion des erreurs */
 
 /**
@@ -147,7 +183,10 @@ function get12derniermois($mois){
  */
 function estEntierPositif($valeur)
 {
-    return preg_match('/[0-9]/',$valeur) == 0;
+    if (!is_numeric($valeur) || $valeur < 0) {
+        return false;
+    }
+    return preg_match('/^\d+$/', (string)$valeur) === 1;
 }
 
 /**
@@ -159,13 +198,16 @@ function estEntierPositif($valeur)
  */
 function estTableauEntiers($tabEntiers)
 {
-    $boolReturn = true;
+    if (!is_array($tabEntiers)) {
+        return false; // Empêche l'erreur si ce n'est pas un tableau
+    }
+
     foreach ($tabEntiers as $unEntier) {
-        if (!estEntierPositif($unEntier)) {
-            $boolReturn = false;
+        if (!is_numeric($unEntier) || !estEntierPositif($unEntier)) {
+            return false;
         }
     }
-    return $boolReturn;
+    return true;
 }
 
 /**
