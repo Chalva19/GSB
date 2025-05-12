@@ -14,46 +14,62 @@
  * @link      http://www.reseaucerta.org Contexte « Laboratoire GSB »
  */
 
-$action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_URL);
+$action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_SPECIAL_CHARS);
+$leMois = getMois(date('d/m/Y'));
+$lesMois = getDerniers12Mois($leMois);
+$lesVisiteurs = $pdo->getLesVisiteurs();
+$idVisiteur = filter_input(INPUT_POST, 'lstVisiteurs', FILTER_SANITIZE_SPECIAL_CHARS );
+$visiteurASelectionner = $idVisiteur;
+$mois = filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_SPECIAL_CHARS );
+$moisASelectionner = $mois;
+$lesFraisForfait = $pdo->getLesFraisForfait($idVisiteur, $mois);
+$lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idVisiteur, $mois);
+$lesFrais = filter_input(INPUT_POST, 'lesFrais', FILTER_DEFAULT, FILTER_FORCE_ARRAY);
+$lesFraisHorsForfais = filter_input(INPUT_POST, 'lesFraisHorsForfais', FILTER_DEFAULT, FILTER_FORCE_ARRAY);
 
-$mois = getMois(date('d/m/Y'));
 
-if (strpos($mois, "Erreur:") !== false) {
-    echo "Erreur dans getMois: $mois";  // Affiche l'erreur si `getMois` échoue
-    exit;
-}
-$listeMois = getDerniers12Mois($mois);
-$listeVisiteurs = $pdo->getLesVisiteurs();
-
-switch ($action) {
-case 'selectionnerVisiteur':
-    include 'vues/v_listeVisiteur.php';
-    break;
-case 'detailFicheFrais':
-    $moiselectionne = $_POST ['lstMois'];
-    $visiteurselectionne = $_POST ['lstVisiteur']; 
-
-    $veriFiche = $pdo->getVerifFicheFrais($visiteurselectionne, $moiselectionne);
-
-    if (!$veriFiche){
+switch($action){
+    case 'selectionnerVisiteur':
+        $lescles = array_keys($lesVisiteurs);
+        $visiteurASelectionne = $lescles[0];
         include 'vues/v_listeVisiteur.php';
-        ajouterErreur( 'Aucune fiche de frai pour ce visiteur et ce mois');
-        include 'vues/v_erreurs.php';
-    }
-    else{
-    $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($visiteurselectionne, $moiselectionne);
-    $lesFraisForfait = $pdo->getLesFraisForfait($visiteurselectionne, $moiselectionne);
-    $lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($visiteurselectionne, $moiselectionne);
-    $numAnnee = substr($moiselectionne, 0, 4);
-    $numMois = substr($moiselectionne, 4, 2);
-    $libEtat = $lesInfosFicheFrais['libEtat'];
-    $montantValide = $lesInfosFicheFrais['montantValide'];
-    $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
-    $dateModif = dateAnglaisVersFrancais($lesInfosFicheFrais['dateModif']);
+        break; 
 
-    include 'vues/v_etatFraisC.php';
+    case 'validerFicheFrais':
+        if (empty($lesFraisForfait) && empty($lesFraisHorsForfait) ){
+            ajouterErreur('Aucune fiche de frais pour le visiteur et le mois selectionné');
+            include 'vues/v_erreurs.php';
+            header("Refresh:2 ; URL= index.php?uc=validerFrais&action=selectionnerVisiteur");
+        }else{
+            $nbJustificatifs = $pdo->getNbjustificatifs($idVisiteur, $mois);
+            include 'vues/v_validerFicheFrais.php';
+
+        }
+        break;
+    
+    case 'majForfait':
+        if (lesQteFraisValides($lesFrais)) {
+            $pdo->majFraisForfait($idVisiteur, $mois, $lesFrais);
+            header("Refresh:2 ; URL= index.php?uc=validerFrais&action=selectionnerVisiteur");
+        } else {
+            ajouterErreur('Les valeurs des frais doivent être numériques');
+            include 'vues/v_erreurs.php';
+        }
+        break;
+
+    case 'majHorsForfait':
+        if (isset($_POST['corrigerFHF'])){
+            echo 'corriger hors forfais';
+            var_dump($lesFraisHorsForfais);
+            $pdo->majFraisHorsForfait($lesFraisHorsForfais);
+            //header("Refresh:2 ; URL= index.php?uc=validerFrais&action=selectionnerVisiteur");
+        }elseif (isset($_POST['supprimerFHF'])){
+            echo 'supprimer hors forfais';
+            //header("Refresh:2 ; URL= index.php?uc=validerFrais&action=selectionnerVisiteur");
+        }
+        
+
+        break;
 }
-    //var_dump($moiselectionne,$visiteurselectionne);
-    break;
-}
+
 ?>

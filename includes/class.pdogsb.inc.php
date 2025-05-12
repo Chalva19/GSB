@@ -267,6 +267,47 @@ class PdoGsb
         }
     }
 
+        /**
+     * Met à jour la table ligneFraisHorsForfait
+     * Met à jour la table ligneFraisHorsForfait pour un visiteur et
+     * un mois donné en enregistrant les nouveaux montants
+     *
+     * @param String $idVisiteur ID du visiteur
+     * @param String $mois       Mois sous la forme aaaamm
+     * @param Array  $lesFrais   tableau associatif de clé idFrais et
+     *                           de valeur la quantité pour ce frais
+     *
+     * @return null
+     */
+    public function majFraisHorsForfait($lesFraisHorsForfais)
+{
+    foreach ($lesFraisHorsForfais as $idFrais => $unFrais) {
+        $montant = $unFrais['montant'];
+        $libelle = $unFrais['libelle'];
+        $date = $unFrais['date'];
+        // Conversion "12/05/2025" => "2025-05-12"
+        $dateFormatee = DateTime::createFromFormat('d/m/Y', $date);
+        if ($dateFormatee) {
+            $dateSql = $dateFormatee->format('Y-m-d');
+        } else {
+            $dateSql = null; // ou gérer une erreur
+        }
+
+        $requetePrepare = PdoGSB::$monPdo->prepare(
+            'UPDATE lignefraishorsforfait 
+             SET montant = :montant, libelle = :libelle, date = :date
+             WHERE id = :idFrais'
+        );
+        $requetePrepare->bindParam(':montant', $montant, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':libelle', $libelle, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':date', $dateSql, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':idFrais', $idFrais, PDO::PARAM_STR);
+
+        $requetePrepare->execute();
+    }
+}
+
+
     /**
      * Met à jour le nombre de justificatifs de la table ficheFrais
      * pour le mois et le visiteur concerné

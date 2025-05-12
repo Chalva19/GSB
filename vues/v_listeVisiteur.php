@@ -14,13 +14,13 @@
  * @link      http://www.reseaucerta.org Contexte « Laboratoire GSB »
  */
 ?>
-<form action="index.php?uc=validerFrais&action=detailFicheFrais"  method="post" role="form">
+<form action="index.php?uc=validerFrais&action=validerFicheFrais"  method="post" role="form">
     <div class="row">
         <div class="col-md-6 form-group">
-            <label for="lstVisiteur" accesskey="n">Visiteur: </label>
-            <select id="lstVisiteur" name="lstVisiteur" class="form-control">
+            <label for="lstVisiteurs" accesskey="n">Visiteur: </label>
+            <select id="lstVisiteurs" name="lstVisiteurs" class="form-control">
             <?php
-                foreach ($listeVisiteurs as $unVisiteur) {
+                foreach ($lesVisiteurs as $unVisiteur) {
                     $idVisiteur = $unVisiteur['id'];
                     $nomVisiteur = $unVisiteur['nom'];
                     $prenomVisiteur = $unVisiteur['prenom'];
@@ -43,7 +43,7 @@
             <label for="lstMois" accesskey="n">Mois: </label>
             <select id="lstMois" name="lstMois" class="form-control">
             <?php
-                foreach ($listeMois as $unMois) {
+                foreach ($lesMois as $unMois) {
                     $mois = $unMois['mois'];
                     $numAnnee = $unMois['numAnnee'];
                     $numMois = $unMois['numMois'];
