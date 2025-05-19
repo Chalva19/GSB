@@ -146,6 +146,7 @@
                 <form method="post" action="index.php?uc=validerFrais&action=majHorsForfait" role="form">
                     <input name="lstMois" type="hidden" id="lstMois" class="form-control" value="<?php echo $moisASelectionner ?>">
                     <input name="lstVisiteurs" type="hidden" id="lstVisiteurs" class="form-control" value="<?php echo $visiteurASelectionner ?>">
+                     <input name="idfrais" type="hidden" id="idfrais" class="form-control" value="<?php echo $unIdFrais ?>">
                     <td>
                         <div class="form-group">
                             <div class="input-group">

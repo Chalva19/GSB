@@ -26,7 +26,7 @@ $lesFraisForfait = $pdo->getLesFraisForfait($idVisiteur, $mois);
 $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idVisiteur, $mois);
 $lesFrais = filter_input(INPUT_POST, 'lesFrais', FILTER_DEFAULT, FILTER_FORCE_ARRAY);
 $lesFraisHorsForfais = filter_input(INPUT_POST, 'lesFraisHorsForfais', FILTER_DEFAULT, FILTER_FORCE_ARRAY);
-
+$idFrais = filter_input(INPUT_POST, 'idfrais', FILTER_SANITIZE_SPECIAL_CHARS);
 
 switch($action){
     case 'selectionnerVisiteur':
@@ -49,9 +49,15 @@ switch($action){
     
     case 'majForfait':
         if (lesQteFraisValides($lesFrais)) {
+
             $pdo->majFraisForfait($idVisiteur, $mois, $lesFrais);
+            $lesFraisForfait=$pdo->getLesFraisForfait($idVisiteur, $mois);
+            ajouterErreur('Les frais forfait ont bien ete modifié');
+            include 'vues/v_erreurs.php';
             header("Refresh:2 ; URL= index.php?uc=validerFrais&action=selectionnerVisiteur");
+
         } else {
+
             ajouterErreur('Les valeurs des frais doivent être numériques');
             include 'vues/v_erreurs.php';
         }
@@ -59,14 +65,22 @@ switch($action){
 
     case 'majHorsForfait':
         if (isset($_POST['corrigerFHF'])){
+
             $pdo->majFraisHorsForfait($lesFraisHorsForfais);
+            $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idVisiteur, $mois);
+            ajouterErreur('Les frais hors forfait ont bien ete modifié');
+            include 'vues/v_erreurs.php';
             header("Refresh:2 ; URL= index.php?uc=validerFrais&action=selectionnerVisiteur");
+
         }elseif (isset($_POST['supprimerFHF'])){
-            $ids = array_keys($lesFraisHorsForfais);
-            $idFrais = $ids[0]; // ici $premierId vaut 1
+            var_dump($idFrais);
             $pdo->supprimerFraisHorsForfait($idFrais);
-            header("Refresh:2 ; URL= index.php?uc=validerFrais&action=selectionnerVisiteur");
-        }
+            $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idVisiteur, $mois);
+            ajouterErreur('Les frais hors forfait ont bien ete supprimé');
+            include 'vues/v_erreurs.php';
+            //header("Refresh:2 ; URL= index.php?uc=validerFrais&action=selectionnerVisiteur");
+
+        }elseif (isset($_POST['reportéFHF'])){}
         
 
         break;
