@@ -59,13 +59,13 @@ switch($action){
 
     case 'majHorsForfait':
         if (isset($_POST['corrigerFHF'])){
-            echo 'corriger hors forfais';
-            var_dump($lesFraisHorsForfais);
             $pdo->majFraisHorsForfait($lesFraisHorsForfais);
-            //header("Refresh:2 ; URL= index.php?uc=validerFrais&action=selectionnerVisiteur");
+            header("Refresh:2 ; URL= index.php?uc=validerFrais&action=selectionnerVisiteur");
         }elseif (isset($_POST['supprimerFHF'])){
-            echo 'supprimer hors forfais';
-            //header("Refresh:2 ; URL= index.php?uc=validerFrais&action=selectionnerVisiteur");
+            $ids = array_keys($lesFraisHorsForfais);
+            $idFrais = $ids[0]; // ici $premierId vaut 1
+            $pdo->supprimerFraisHorsForfait($idFrais);
+            header("Refresh:2 ; URL= index.php?uc=validerFrais&action=selectionnerVisiteur");
         }
         
 
