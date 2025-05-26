@@ -50,6 +50,9 @@ case 'deconnexion':
 case 'validerFrais':
     include 'controleurs/c_validerFicheFrais.php';
     break;
+case 'payerFrais':
+    include 'controleurs/c_suivrePaiment.php';
+    break; 
 
 }
 require 'vues/v_pied.php';

@@ -66,8 +66,16 @@ function deconnecter()
  */
 function dateFrancaisVersAnglais($maDate)
 {
-    @list($jour, $mois, $annee) = explode('/', $maDate);
-    return date('Y-m-d', mktime(0, 0, 0, $mois, $jour, $annee));
+    /*@list($jour, $mois, $annee) = explode('/', $maDate);
+    return date('Y-m-d', mktime(0, 0, 0, $mois, $jour, $annee));*/
+    $dateFormatee = DateTime::createFromFormat('d/m/Y', $maDate);
+    if ($dateFormatee) {
+        $dateSql = $dateFormatee->format('Y-m-d');
+    } else {
+        $dateSql = null; // ou gérer une erreur
+    }
+    return $dateSql;
+
 }
 
 /**
@@ -105,7 +113,7 @@ function getMois($date)
 function getMoisPrecedent($mois){
     $annee = substr($mois, 0,4);
     $moisrecup = substr($mois, -2);
-    if ($moisrecup = 01){
+    if ($moisrecup == 01){
         $moisPrecedent = 12;
         $anneePrecedente = $annee -1;
     }
@@ -119,7 +127,7 @@ function getMoisPrecedent($mois){
 function getMoisSuivant($mois){
     $annee = substr($mois, 0,4);
     $moisrecup = substr($mois, -2);
-    if ($moisrecup = 12){
+    if ($moisrecup == 12){
         $moisSuivant = 01;
         $anneeSuivante = $annee + 1;
     }
@@ -127,6 +135,7 @@ function getMoisSuivant($mois){
         $moisSuivant = $moisrecup + 1;
         $anneeSuivante = $annee;
     }
+    $moisSuivant = str_pad($moisSuivant, 2, "0", STR_PAD_LEFT);
     return $anneeSuivante . $moisSuivant;
 }
 

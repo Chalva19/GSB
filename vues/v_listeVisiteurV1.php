@@ -14,7 +14,7 @@
  * @link      http://www.reseaucerta.org Contexte « Laboratoire GSB »
  */
 ?>
-<form action="index.php?uc=validerFrais&action=validerFicheFrais"  method="post" role="form">
+<form action="index.php?uc=payerFrais&action=valider"  method="post" role="form">
     <div class="row">
         <div class="col-md-6 form-group">
             <label for="lstVisiteurs" accesskey="n">Visiteur: </label>

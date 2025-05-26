@@ -55,7 +55,7 @@
                                 </a>
                             </li>
                             <li <?php if ($uc == 'suivre le paiement des fiches frais') { ?>class="active"<?php } ?>>
-                                <a href="index.php?uc=payerFrais&action="style="color:orangered">
+                                <a href="index.php?uc=payerFrais&action=selectionnerVisiteur"style="color:orangered">
                                     € Suivre le paiement des fiches de frais
                                 </a>
                             </li>

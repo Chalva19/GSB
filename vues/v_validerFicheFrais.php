@@ -146,11 +146,11 @@
                 <form method="post" action="index.php?uc=validerFrais&action=majHorsForfait" role="form">
                     <input name="lstMois" type="hidden" id="lstMois" class="form-control" value="<?php echo $moisASelectionner ?>">
                     <input name="lstVisiteurs" type="hidden" id="lstVisiteurs" class="form-control" value="<?php echo $visiteurASelectionner ?>">
-                     <input name="idfrais" type="hidden" id="idfrais" class="form-control" value="<?php echo $unIdFrais ?>">
+                    <input name="idfrais" type="hidden" id="idfrais" class="form-control" value="<?php echo $unIdFrais ?>">
                     <td>
                         <div class="form-group">
                             <div class="input-group">
-                                <input class="form-control" name="lesFraisHorsForfais[<?php echo $unIdFrais ?>][date]" type="text" maxlength="45" value="<?php echo $date ?>">
+                                <input class="form-control" name="date" type="text" maxlength="45" value="<?php echo $date ?>">
                             </div>
                         </div>
                     </td>
@@ -158,7 +158,7 @@
                     <td>
                         <div class="form-group">
                             <div class="input-group">
-                                <input class="form-control" name="lesFraisHorsForfais[<?php echo $unIdFrais ?>][libelle]" type="text" maxlength="45" value="<?php echo $libelle ?>">
+                                <input class="form-control" name="libelle" type="text" maxlength="45" value="<?php echo $libelle ?>">
                             </div>
                         </div>
                     </td>
@@ -166,9 +166,7 @@
                     <td>
                         <div class="form-group">
                             <div class="input-group">
-                                <input class="form-control" name="lesFraisHorsForfais[<?php echo $unIdFrais ?>][montant]" type="text" maxlength="45" value="<?php echo $montant ?>">
-                                <input class="form-control" name="unIdFrais" type="hidden" maxlength="45" value="<?php echo $unIdFrais ?>">
-                            </div>
+                                <input class="form-control" name="montant" type="text" maxlength="45" value="<?php echo $montant ?>">                            </div>
                         </div>
                     </td>
 
@@ -184,7 +182,7 @@
             ?>
         </table>
     </div>
-    <form method="post"  action="index.php?uc=validerFicheFrais&action=validerMontant"
+    <form method="post"  action="index.php?uc=validerFrais&action=validerMontant"
           role="form">
         <div class="col-md-4">
             <label for="nbJustificatif"> Nombre de justificatifs </label>
